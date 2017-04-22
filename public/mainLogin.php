@@ -1,8 +1,13 @@
 <?php 
 // Include the ShoppingCart class.  Since the session contains a
 // ShoppingCard object, this must be done before session_start().
-require "../application/cart.php";
-session_start();
+ require "../application/cart.php";
+
+ session_start(); 
+
+$conn = @mysqli_connect( "localhost", "root", "root", "iHub" ) or die( "Connect failed: ". mysqli_connect_error() );
+include ('queries.php');
+
 //print_r($_SESSION);
 // echo "<br>after starting a session in index4. . .";
 ?>
@@ -10,7 +15,22 @@ session_start();
 <!DOCTYPE html>
 
 <?php
+   // if ($_POST['submit']) {
+
 // If this session is just beginning, store an empty ShoppingCart in it.
+if (!isset($_SESSION['hubCart'])) {
+    $_SESSION['hubCart'] = new Cart();
+
+}
+
+ if ($_POST['submit']) {
+ 	$id = $_POST['cmc_id'];
+ 	$phoneNumber = '650-787-2116';
+ 	mysqli_stmt_execute($cInsert);
+ 	echo '<script>window.location="menu.php"</script>';
+ 	
+
+ }
 
 ?>
 
@@ -61,11 +81,11 @@ function validatePhone (control, errormessage) {
 
 <p>Please enter your CMC id</p> 
 
-<form method="post" action = 'menu.php'>
+<form method="post">
 
- <input type="txt" name="phone"  id="phone"  onBlur="validatePhone(this, '  Please enter a valid CMC id!')"><span class="message"></span>
+ <input type="txt" name="cmc_id"  id="cmc_id"  onBlur="validatePhone(this, '  Please enter a valid CMC id!')"><span class="message"></span>
 </br>
-<button id = "loginbutton">Login</button>
+ <input type="submit" id = "loginbutton" name="submit" value="Submit"></input>
 </form>
 
 </body>

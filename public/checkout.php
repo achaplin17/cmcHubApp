@@ -2,7 +2,9 @@
 
 require "../application/cart.php";
 require "../application/item.php";
-session_start(); 
+session_start();
+$conn = @mysqli_connect( "localhost", "root", "root", "iHub" ) or die( "Connect failed: ". mysqli_connect_error() );
+include ('queries.php'); 
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +20,80 @@ if (!isset($_SESSION['hubCart'])) {
 
 }
 
+
+ if ($_POST['submit']) {
+ 	//echo "asd";
+
+ 	// ****************** ORDERS ****************** 
+
+ 	$cmc_id = "sad";
+ 	$checked = isset($_POST['check_list']) ? $_POST['check_list'] : array();
+ 	$checked_value = $_POST['check_list'][0];
+ 	$payment_type = $checked_value;
+ 	//echo $payment_type;
+ 	$order_date = "4/20/17";
+ 	$number_of_items = count($_SESSION['hubCart']->getOrder());
+ 	$total_order_price = "69";
+
+
+ 	mysqli_stmt_execute($orderInsert);
+    $order_id =  mysqli_stmt_insert_id($orderInsert);
+    
+ 
+    mysqli_stmt_close($orderInsert);
+ 
+ 	
+
+    // ****************** ITEM ****************** 
+
+
+
+    $item_sql_array = $_SESSION['hubCart']->getOrder();
+   	while ($j = current($item_sql_array)) {
+
+   		$type = "sad";
+   		$quantity = 1;
+ 		$price = 1;
+ 		$instructions = "I LOVE THE HARD CODE";
+   		
+   		$name = $j->getItemName();  
+     	
+     	mysqli_stmt_execute($itemInsert); 
+     	$item_id =  mysqli_stmt_insert_id($itemInsert);
+     	 mysqli_stmt_close($itemInsert);
+     	
+     	next($item_sql_array);  
+ 	}
+
+
+
+
+    // ****************** TOPPINGS ****************** 
+
+
+  //   $itemForToppings_sql_array = $_SESSION['hubCart']->getOrder();
+  //  	while ($k = current($itemForToppings_sql_array )) {
+	
+  //  		$l = $k->getItemName();  
+     	
+  //    	$toppings_Arr = $l->getToppings();
+  //           foreach ($toppings_Arr as $key => $value) {
+  //               $toppings_name = $value;
+  //               mysqli_stmt_execute($toppingsInsert); 
+  //           } 
+
+  //       next($itemForToppings_sql_array );  
+ 	// }
+
+
+
+                        
+
+
+
+ 	session_unset();
+    echo '<script>window.location="mainLogin.php"</script>';
+ }
 
 // foreach (cart::$toppingsArr as $key) {
 //  //print_r(" ". $key);
@@ -180,7 +256,7 @@ if (!isset($_SESSION['hubCart'])) {
 
 
 <form action='menu.php'>
-    <input type="submit" value="Resume Shopping" />
+    <input type="submit" value="Resume Shopping" name = "resumeShopping" />
 </form>
 
 <form method ="post">
@@ -193,19 +269,19 @@ if (!isset($_SESSION['hubCart'])) {
     <div class="col-md-4">
       <div class="checkbox">
         <label for="Meat-0">
-          <input type="checkbox" name="t-turkey" id="Meat-0" value="turkey">
+          <input type="checkbox" name="check_list[]" id="Meat-0" value="Flex">
           Flex
         </label>
       </div>
       <div class="checkbox">
         <label for="Meat-1">
-          <input type="checkbox" name="t-ham" id="Meat-1" value="ham">
+          <input type="checkbox" name="check_list[]" id="Meat-1" value="Claremont Cash">
         Claremont Cash
         </label>
       </div>
       <div class="checkbox">
         <label for="Meat-2">
-          <input type="checkbox" name="t-steak" id="Meat-2" value="steak">
+          <input type="checkbox" name="check_list[]" id="Meat-2" value="Venmo">
         Venmo
         </label>
       </div>
@@ -219,14 +295,14 @@ if (!isset($_SESSION['hubCart'])) {
       <textarea class="form-control" id="instructions" name="instructions"></textarea>
     </div>
   </div> -->
-
+<input type="submit" name = "submit" value="Submit" onclick = "myFunction()"/>
 </fieldset>
 </form>
 
 
-<form>
-    <input type="submit" value="Submit" onclick = "myFunction()"/>
-</form>
+
+    
+
 <script>
 
 function myFunction() {
