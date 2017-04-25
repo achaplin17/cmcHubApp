@@ -6,6 +6,7 @@ class Cart {
 	
 
 
+    
     // The array that contains the order
     private $order; 
 	
@@ -15,10 +16,10 @@ class Cart {
     }
 	
     // Adds an order to the shopping cart.  
-    public function orderAddToCart($name, $toppings) {
+    public function orderAddToCart($name, $toppings, $price) {
 
         // creating new item instance 
-        $newItem = new Item($name, $toppings);
+        $newItem = new Item($name, $toppings, $price);
         // add item to order array
        
         array_push($this->order, $newItem);
