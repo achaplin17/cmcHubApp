@@ -3,7 +3,6 @@
 require "../application/cart.php";
 require "../application/item.php";
 session_start(); 
-session_unset();
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +21,6 @@ if (!isset($_SESSION['hubCart'])) {
  if ($_POST["item"]) {
  	    $toppings = array();
  		$item = $_POST["item"];
- 		$price = $_POST["price"];
- 		echo $price;
 		foreach ($_POST as $key => $value) {
 			$exp_key = explode('-', $key);
 			if ($exp_key[0] == 't'){
@@ -33,7 +30,7 @@ if (!isset($_SESSION['hubCart'])) {
 	
 
 	//echo "---"; print_r($_SESSION['hubCart']); echo "--<br><br>";
-	$_SESSION['hubCart']->orderAddToCart($item, $toppings, $price); 
+	$_SESSION['hubCart']->orderAddToCart($item, $toppings); 
 	//echo "---"; print_r($_SESSION['hubCart']); echo "--";
  	
 
@@ -60,7 +57,7 @@ if (!isset($_SESSION['hubCart'])) {
 <html lang="en">
 
 <head>
-	<link rel = "stylesheet" href="finalmenu.css">
+	<link rel = "stylesheet" type="text/css" href="finalmenu.css">
 	<title>OrderHubLogin4</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,8 +88,8 @@ if (!isset($_SESSION['hubCart'])) {
 		         	<div class="menu-item-name">
 		         		Sandwich
 		         	</div>
-		         	<div class="menu-item-price" id="5">
-		            	$5.00
+		         	<div class="menu-item-price">
+		            	$5
 		         	</div>
 		         	<div class="menu-item-description">
 		            	Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.
@@ -105,8 +102,8 @@ if (!isset($_SESSION['hubCart'])) {
 		         	<div class="menu-item-name">
 		         		Salad
 		         	</div>
-		         	<div class="menu-item-price" id="6">
-		            	$6.00
+		         	<div class="menu-item-price">
+		            	$6
 		         	</div>
 		         	<div class="menu-item-description">
 		            	Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.
@@ -120,58 +117,6 @@ if (!isset($_SESSION['hubCart'])) {
 
 		<div class = "section d-inline-flex" id = "section">
 			<h2 id="cartTitle">Cart</h2>
-
-			<!-- *****************Shopping Cart ******************* -->
-
-			<table class="table table-bordered">
-			<thead>
-		  		<tr>
-		  			<th>#</th>
-		  			<th>Price</th>
-		  			<th>Item</th>
-		  			<th>Toppings</th>
-		  		</tr>
-		  	</thead>
-		  	<tbody>
-				<?php
-				 //echo "<tr></tr>";
-					
-					$orderArray = $_SESSION['hubCart']->getOrder();
-					$totalOrderPrice = 0;
-					$counter = 0;
-					while ($i = current($orderArray)) {
-
-						echo "<tr>";
-						echo "<td>";
-
-						echo $counter;
-
-					
-						echo "</td>";
-						echo "<td>";
-						echo "$".$i->getItemPrice().".00";
-
-						$currentItemPrice = (int)(ltrim( $i->getItemPrice(), "$"));
-						
-						echo "</td>";
-							echo "<td>";
-							echo $i->getItemName(); 
-							echo "</td>";
-
-							$toppings = $i->getToppings();
-							foreach ($toppings as $key => $value) {
-							 	echo "<td>" .$value. " </td>";
-						 	}			 	
-						next($orderArray);
-						echo "</tr>";
-						$counter++;
-						$totalOrderPrice += $currentItemPrice;
-
-					}
-					echo "TOTAL PRICE = $".$totalOrderPrice.".00";
-				?>   
-		     </tbody>	
-			</table>
 		</div>
 	</div>
 
@@ -194,7 +139,7 @@ if (!isset($_SESSION['hubCart'])) {
 				    <input class = "modal-title" name="item" type = "hidden"></input>
 				    
 				    
-				    <input class="modal-title-price" name="price" type="hidden"><h3 class="item-price"></h3></input>
+				    <h3 class="item-price"></h3>
 			    </div>
 		      <div class="modal-body">
 		      </div>
@@ -210,8 +155,48 @@ if (!isset($_SESSION['hubCart'])) {
 
 	
 
+	<!-- ***************** Sample Shopping Cart ******************* -->
 
-	
+
+	<h3>Our Shopping Cart</h3>
+
+	<table class="table table-bordered">
+	<thead>
+  		<tr>
+  			<th>#</th>
+  			<th>Item</th>
+  			<th>Toppings</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+			<?php
+			 //echo "<tr></tr>";
+				$orderArray = $_SESSION['hubCart']->getOrder();
+
+				$counter = 0;
+				while ($i = current($orderArray)) {
+
+					echo "<tr>";
+					echo "<td>";
+
+					echo $counter;
+				
+					echo "</td>";
+						echo "<td>";
+						echo $i->getItemName(); 
+						echo "</td>";
+
+						$toppings = $i->getToppings();
+						foreach ($toppings as $key => $value) {
+						 	echo "<td>" .$value. " </td>";
+					 	}			 	
+					next($orderArray);
+					echo "</tr>";
+					$counter++;
+				}
+			?>   
+     </tbody>	
+	</table>
 
 <form action='checkout.php'>
     <input type="submit" value="Checkout" />
@@ -230,19 +215,17 @@ if (!isset($_SESSION['hubCart'])) {
 		 	$(this).find(".menu-item").each(function(){
 	     		$(this).on( 'click', function () {
 	      			var id  = $(this).attr("id");
-	      			var price = $(this).find(".menu-item-price").attr("id");
-	      			showModal(id, price);
+	      			showModal(id);
 	   			});
 	  		});
 		});
 
 		// receive the id passed in from the above script. simple switch case to test the string value of the id, then assign a variable with the correct file name to finally be used for retrieving proper data to show in the modal. 
 		
-	function showModal(id, price) {
+	function showModal(id) {
 
 			 // $(".modal-title").html(id);
 			 $(".modal-title").val(id);
-			 $(".modal-title-price").val(price);
 
 
 			
@@ -250,11 +233,11 @@ if (!isset($_SESSION['hubCart'])) {
 			switch (id) {
 				case 'sandwich':
 					fileName = "sandwichForm.html";
-					$(".item-price").text("$" + price + ".00"); //instead of hardcoding price, assign id to each price-item above and use here
+					$(".item-price").text('$10.00'); //instead of hardcoding price, assign id to each price-item above and use here
 					break;
 				case 'salad':
 					fileName = "saladForm.html";
-					$(".item-price").text("$" + price + ".00");
+					$(".item-price").text('$7.00');
 					break;
 				default:
 					fileName = "menu.css";

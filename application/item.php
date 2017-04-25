@@ -7,16 +7,13 @@
     public $itemName;
    
     // The array that contains the toppings
-    public $toppingsArr;
-
-    public $itemPrice; 
+    public $toppingsArr; 
 	
     // Initially, the cart is empty
-    public function __construct($name, $toppings, $price) {
+    public function __construct($name, $toppings) {
         
         $this->itemName = $name;
         $this->toppingsArr = $toppings;
-        $this->itemPrice = $price;
     }
 
 	
@@ -32,10 +29,6 @@
 
     public function getItemName() {
         return $this->itemName;
-    }
-
-     public function getItemPrice() {
-        return $this->itemPrice;
     }
     
 
