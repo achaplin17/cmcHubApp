@@ -18,43 +18,6 @@ if (!isset($_SESSION['hubCart'])) {
 
 }
 
-
-// foreach (cart::$toppingsArr as $key) {
-// 	//print_r(" ". $key);
-// 	foreach ($_POST as $toppingsAdded) {
-// 		if ($toppingsAdded = $key) {
-// 			//print_r($key);
-// 		}
-// 	}
-
-// }
-
-
-// foreach (cart::$toppingsArr as $key) {
-// 	print_r(" ". $key);
-// 	if (in_array($key, $_POST)) {
-// 		//print_r($key);
-// 	}
-
-// }
-
-// foreach ($_POST as $key) {
-// 	$key = explode('t-'.$key);
-
-// }
-// $search = "t-";
-// $search_length = strlen($search);
-// foreach ($_POST as $key => $value) {
-// 	if (substr($key, 0, $search_length) == $search) {
-// 		print_r($value);
-// 	}
-// }
-
-
-//print_r($_POST);
-
-
-
  if ($_POST["item"]) {
  	    $toppings = array();
  		$item = $_POST["item"];
@@ -74,11 +37,6 @@ if (!isset($_SESSION['hubCart'])) {
  }
 
 
-
-
-//print_r($_POST);
-
-
 // if ($_POST["foo"]) {
 // 		if ($item && is_numeric($quantity) && $quantity > 0) {
 // 			$_SESSION['hubCart']->order($item, $quantity); //DON'T FORGET TO ADD MESSAGE IN MODAL IF QUANTITY IS NOT NUMBER OR LESS THAN 0!!!!
@@ -91,13 +49,6 @@ if (!isset($_SESSION['hubCart'])) {
 // 		}
 // }
 
-//$toppingsAdded = array('coffee');
-
-
-
-//for each item selected in the i.e. sandwich form
-	//add item to array $topingsAdded
-	//then call $_SESSION['hubCart']->order($item, $quantity, $topingsAdded ); //but need to modify order method first
 
 ?>
 

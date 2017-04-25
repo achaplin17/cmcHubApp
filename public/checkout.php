@@ -71,19 +71,19 @@ if (!isset($_SESSION['hubCart'])) {
     // ****************** TOPPINGS ****************** 
 
 
-  //   $itemForToppings_sql_array = $_SESSION['hubCart']->getOrder();
-  //  	while ($k = current($itemForToppings_sql_array )) {
-	
-  //  		$l = $k->getItemName();  
-     	
-  //    	$toppings_Arr = $l->getToppings();
-  //           foreach ($toppings_Arr as $key => $value) {
-  //               $toppings_name = $value;
-  //               mysqli_stmt_execute($toppingsInsert); 
-  //           } 
+    $itemForToppings_sql_array = $_SESSION['hubCart']->getOrder();
+  
+   	while ($k = current($itemForToppings_sql_array )) {
+   		
+     	$toppings_Arr = $k->getToppings();
+     
+            foreach ($toppings_Arr as $key => $value) {
+                $toppings_name = $value;
+                mysqli_stmt_execute($toppingsInsert); 
+            } 
 
-  //       next($itemForToppings_sql_array );  
- 	// }
+      next($itemForToppings_sql_array);  
+ 	}
 
 
 
@@ -92,42 +92,9 @@ if (!isset($_SESSION['hubCart'])) {
 
 
  	session_unset();
-    echo '<script>window.location="mainLogin.php"</script>';
+     echo '<script>window.location="mainLogin.php"</script>';
  }
 
-// foreach (cart::$toppingsArr as $key) {
-//  //print_r(" ". $key);
-//  foreach ($_POST as $toppingsAdded) {
-//      if ($toppingsAdded = $key) {
-//          //print_r($key);
-//      }
-//  }
-
-// }
-
-
-// foreach (cart::$toppingsArr as $key) {
-//  print_r(" ". $key);
-//  if (in_array($key, $_POST)) {
-//      //print_r($key);
-//  }
-
-// }
-
-// foreach ($_POST as $key) {
-//  $key = explode('t-'.$key);
-
-// }
-// $search = "t-";
-// $search_length = strlen($search);
-// foreach ($_POST as $key => $value) {
-//  if (substr($key, 0, $search_length) == $search) {
-//      print_r($value);
-//  }
-// }
-
-
-//print_r($_POST);
 
 
 
@@ -140,40 +107,10 @@ if (!isset($_SESSION['hubCart'])) {
                 array_push($toppings, $value);
             }
         }
-    
 
-    //echo "---"; print_r($_SESSION['hubCart']); echo "--<br><br>";
     $_SESSION['hubCart']->orderAddToCart($item, $toppings); 
     //echo "---"; print_r($_SESSION['hubCart']); echo "--";
-    
-
  }
-
-
-
-
-//print_r($_POST);
-
-
-// if ($_POST["foo"]) {
-//      if ($item && is_numeric($quantity) && $quantity > 0) {
-//          $_SESSION['hubCart']->order($item, $quantity); //DON'T FORGET TO ADD MESSAGE IN MODAL IF QUANTITY IS NOT NUMBER OR LESS THAN 0!!!!
-        
-            //unset($_POST["item"]);
-            //echo("added ". $quantity);
-
-            //echo("added ". $item);
-        
-//      }
-// }
-
-//$toppingsAdded = array('coffee');
-
-
-
-//for each item selected in the i.e. sandwich form
-    //add item to array $topingsAdded
-    //then call $_SESSION['hubCart']->order($item, $quantity, $topingsAdded ); //but need to modify order method first
 
 ?>
 
@@ -211,7 +148,7 @@ if (!isset($_SESSION['hubCart'])) {
 
     
 
-    <!-- ***************** Sample Shopping Cart ******************* -->
+    <!-- ***************** Shopping Cart ******************* -->
 
 
     <h3>Order Summary</h3>
@@ -299,9 +236,6 @@ if (!isset($_SESSION['hubCart'])) {
 </fieldset>
 </form>
 
-
-
-    
 
 <script>
 
