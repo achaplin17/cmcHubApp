@@ -3,7 +3,7 @@
 require "../application/cart.php";
 require "../application/item.php";
 session_start(); 
-session_unset();
+//session_unset();
 ?>
 
 <!DOCTYPE html>
