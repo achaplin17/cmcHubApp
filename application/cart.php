@@ -16,13 +16,15 @@ class Cart {
     }
 	
     // Adds an order to the shopping cart.  
-    public function orderAddToCart($name, $toppings, $price) {
+    public function orderAddToCart($name, $toppings, $price, $quantity) {
 
         // creating new item instance 
-        $newItem = new Item($name, $toppings, $price);
+        $newItem = new Item($name, $toppings, $price, $quantity);
         // add item to order array
        
         array_push($this->order, $newItem);
+
+        //$this->order[$itemId, $newItem]
     }
 	
 
@@ -35,17 +37,18 @@ class Cart {
         return $this->order;
     }
 
+
      
 
-     // Girlscout Cookies methods
-    //enables user to delete an item from shopping cart
-
-    //  public function delete($variety) {
-    //   $this->order[$variety] = 0;
-    //   unset($this->order[$variety]);
-    // }
+     public function delete($itemToDelete) {
+      //$this->order[$itemToDelete] = 0;
+      unset($this->order[$itemToDelete]);
+    }
     
 
+
+// Girlscout Cookies methods
+    //enables user to delete an item from shopping cart
     //enables user to add a quantity of an item in shopping cart
     // public function add($variety) {
     //   $currentQuantity = $this->order[$variety];

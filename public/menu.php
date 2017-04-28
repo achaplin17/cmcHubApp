@@ -23,7 +23,8 @@ if (!isset($_SESSION['hubCart'])) {
  	    $toppings = array();
  		$item = $_POST["item"];
  		$price = $_POST["price"];
- 		echo $price;
+ 		$quantity = $_POST["quantity"];
+ 		//echo $price;
 		foreach ($_POST as $key => $value) {
 			$exp_key = explode('-', $key);
 			if ($exp_key[0] == 't'){
@@ -33,7 +34,7 @@ if (!isset($_SESSION['hubCart'])) {
 	
 
 	//echo "---"; print_r($_SESSION['hubCart']); echo "--<br><br>";
-	$_SESSION['hubCart']->orderAddToCart($item, $toppings, $price); 
+	$_SESSION['hubCart']->orderAddToCart($item, $toppings, $price, $quantity); 
 	//echo "---"; print_r($_SESSION['hubCart']); echo "--";
  	
 
@@ -61,13 +62,30 @@ if (!isset($_SESSION['hubCart'])) {
 
 <head>
 	<link rel = "stylesheet" href="finalmenu.css">
-	<title>OrderHubLogin4</title>
+	<title>OrderHubLogin</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://use.fontawesome.com/6aabf1bd39.js"></script>
+
+	
+
+<!-- 	Linking CSS files from shopping cart template (index.html) -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="shoppingCartTemplate/assets/css/custom.css"/>	
+
+
+	<!-- Linking files for quantity button in modal -->
+	<script src="quantityButton/quantityButton.js"></script>
+	<link rel="stylesheet" type="text/css" href="quantityButton/quantityButton.css"/>
+
+
+	<!-- Script for including html files within html -->
+	<!-- <script src="https://www.w3schools.com/lib/w3data.js"></script> -->
+
+
 </head>
 
 
@@ -123,16 +141,14 @@ if (!isset($_SESSION['hubCart'])) {
 
 			<!-- *****************Shopping Cart ******************* -->
 
-			<table class="table table-bordered">
-			<thead>
-		  		<tr>
-		  			<th>#</th>
-		  			<th>Price</th>
-		  			<th>Item</th>
-		  			<th>Toppings</th>
-		  		</tr>
-		  	</thead>
-		  	<tbody>
+			<div class="col-md-7 col-sm-12 text-left">
+				
+		  		<ul>
+					<li class="row list-inline columnCaptions">
+						<span>QTY</span>
+						<span>ITEM</span>
+						<span>Price</span>
+					</li>
 				<?php
 				 //echo "<tr></tr>";
 					
@@ -141,40 +157,71 @@ if (!isset($_SESSION['hubCart'])) {
 					$counter = 0;
 					while ($i = current($orderArray)) {
 
-						echo "<tr>";
-						echo "<td>";
+						echo "<li class=\"row\">";
+						echo "<span class=\"quantity\">";
+						echo $i->getItemQuantity();
+						//echo $counter;
+						echo "</span>";
 
-						echo $counter;
+						
+						echo "<span class=\"itemName\">";
+						echo ucfirst($i->getItemName()); 
+						echo "<ul>";
 
-					
-						echo "</td>";
-						echo "<td>";
+
+
+						$toppings = $i->getToppings();
+							foreach ($toppings as $key => $value) {
+							 	echo "<li>"."-" .$value. " </li>";
+						 	}
+						echo "</ul>";
+
+
+						echo "</span>";
+
+						echo "<span class=\"popbtn\"><a class=\"arrow\"></a></span>";
+						
+						echo "<span class=\"price\">";
 						echo "$".$i->getItemPrice().".00";
+						echo "</span>";
+
 
 						$currentItemPrice = (int)(ltrim( $i->getItemPrice(), "$"));
 						
-						echo "</td>";
-							echo "<td>";
-							echo $i->getItemName(); 
-							echo "</td>";
+						
 
-							$toppings = $i->getToppings();
-							foreach ($toppings as $key => $value) {
-							 	echo "<td>" .$value. " </td>";
-						 	}			 	
+										 	
 						next($orderArray);
-						echo "</tr>";
+						// echo "</tr>";
 						$counter++;
 						$totalOrderPrice += $currentItemPrice;
 
-					}
-					echo "TOTAL PRICE = $".$totalOrderPrice.".00";
-				?>   
-		     </tbody>	
-			</table>
-		</div>
-	</div>
+						
 
+
+
+						echo "</li>";
+					}
+					echo "<li class=\"row totals\">";
+							echo "<span class=\"itemName\">Total:";
+							echo "</span>";
+							echo "<span class=\"price\">". "$".$totalOrderPrice.".00";
+							echo "</span>";
+							echo "<span class=\"order\">";
+							echo "<a href = \"checkout.php\"class = \"text-center\">ORDER</a>";
+							echo "</span>";
+				echo "</ul>";
+					//echo "TOTAL PRICE = $".$totalOrderPrice.".00";
+				?>   
+					  			
+			</div>
+				<div id="popover" style="display: none">
+					<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+					<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+				</div>	
+		</div>
+
+	</div>
 
    
 
@@ -191,11 +238,16 @@ if (!isset($_SESSION['hubCart'])) {
 			    <div class="modal-header">
 				    <button type="button" class="close" data-dismiss="modal">&times;</button>
 				    
-				    <input class = "modal-title" name="item" type = "hidden"></input>
-				    
+				    <input class = "modal-title" name="item" type = "hidden"><h1 class = "product_modal_name"></h1></input>
+				    <!-- <input name="sandwich" type="hidden"><h1 name = "sandwich">Sandwich</h1></input> -->
 				    
 				    <input class="modal-title-price" name="price" type="hidden"><h3 class="item-price"></h3></input>
-			    </div>
+
+					<form id='myform' method='POST' action='#'>
+					    <input type='button' value='-' class='qtyminus' field='quantity' />
+					    <input type='text' name='quantity' value='0' class='qty' />
+					    <input type='button' value='+' class='qtyplus' field='quantity' />
+					</form>
 		      <div class="modal-body">
 		      </div>
 		      	<div class="modal-footer">
@@ -240,21 +292,25 @@ if (!isset($_SESSION['hubCart'])) {
 		
 	function showModal(id, price) {
 
-			 // $(".modal-title").html(id);
+			 //$(".modal-title").html(id);
+			 //$(".product_modal_name").text("ada");
 			 $(".modal-title").val(id);
 			 $(".modal-title-price").val(price);
 
-
+			var idText = id.substr(0,1).toUpperCase()+id.substr(1);
+					$(".product_modal_name").text(idText);
 			
 			var fileName;
 			switch (id) {
 				case 'sandwich':
 					fileName = "sandwichForm.html";
 					$(".item-price").text("$" + price + ".00"); //instead of hardcoding price, assign id to each price-item above and use here
+				
 					break;
 				case 'salad':
 					fileName = "saladForm.html";
 					$(".item-price").text("$" + price + ".00");
+					
 					break;
 				default:
 					fileName = "menu.css";
@@ -267,6 +323,14 @@ if (!isset($_SESSION['hubCart'])) {
 	    	 // $("#myModal").modal();
 	        $('#myModal').modal('open');
 		};
+
+		
 	</script>
+
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> 
+		<script src="shoppingCartTemplate/assets/js/bootstrap.min.js"></script>
+		<script src="shoppingCartTemplate/assets/js/customjs.js"></script>
+	
+
 </body>
 </html>

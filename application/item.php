@@ -6,17 +6,23 @@
 	
     public $itemName;
    
+   // public $itemID;
     // The array that contains the toppings
     public $toppingsArr;
 
     public $itemPrice; 
+
+    public $quantity;
 	
     // Initially, the cart is empty
-    public function __construct($name, $toppings, $price) {
+    public function __construct($name, $toppings, $price, $quantity) {
         
         $this->itemName = $name;
         $this->toppingsArr = $toppings;
         $this->itemPrice = $price;
+        $this->quantity = $quantity;
+        // $this->itemID = $itemID;
+
     }
 
 	
@@ -37,7 +43,18 @@
      public function getItemPrice() {
         return $this->itemPrice;
     }
+
+    public function getItemQuantity() {
+        return $this->quantity;
+    }
+
+    public function getItemID() {
+        return $this->itemID;
+    }
     
+    // public function setItemID($idToSet) {
+    //     $this->itemID = $idToSet;
+    // }
 
     //enables user to add a topping in to the toppings array of an item
     public function addTopping($individualTopping) {
