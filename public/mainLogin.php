@@ -125,6 +125,11 @@ function validatePhone (control, errormessage) {
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
+                    <li>
+                        <a href="hubEmployeeView.php">EMPLOYEES</a>
+                    </li>
+
+                    <!-- <a href="mainLogin.php">HOME PAGE</a> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

@@ -16,9 +16,21 @@ $(function() {
 	});
 
 
-	pop.on('click', function(e) {
+
+	pop.on('mouseout', function(e) {
 		pop.popover('toggle');
 		pop.not(this).popover('hide');
+
+		console.log("mouseout function fire");
+	});
+
+
+
+	pop.on('mouseover', function(e) {
+		pop.popover('toggle');
+		pop.not(this).popover('hide');
+
+		console.log("mouseover function fire");
 	});
 
 	$(window).on('resize', function() {
@@ -28,6 +40,7 @@ $(function() {
 	row.on('touchend', function(e) {
 		$(this).find('.popbtn').popover('toggle');
 		row.not(this).find('.popbtn').popover('hide');
+		console.log("touchend function fire");
 		return false;
 	});
 
