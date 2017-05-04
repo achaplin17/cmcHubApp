@@ -1,3 +1,12 @@
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    color: #222222 !important;
+}
+
+.navbar {
+  color: #F05F40;
+}
+
+
 .menu-body {
   max-width: 680px;
  /* margin: 0 auto;*/
@@ -80,13 +89,13 @@
   margin-right: auto;
   -webkit-flex-direction: column;
   flex-direction: column;
-  background-color: #272822;
+  background-color: white;
 
 }
 
 #section {
 /*  margin-left: auto;*/
-  background-color: red;
+  background-color: #ffffff;
   width: 30%;
   text-align: center;
   font-family: georgia;
@@ -102,3 +111,4 @@
 .is-breakable {
   word-break: break-word;
 }
+

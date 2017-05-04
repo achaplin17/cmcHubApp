@@ -1,4 +1,3 @@
-e
 DROP DATABASE IF EXISTS iHub;
 
 
