@@ -28,7 +28,7 @@ if (!isset($_SESSION['hubCart'])) {
  	$id = $_POST['cmc_id'];
  	$phoneNumber = '650-787-2116';
  	mysqli_stmt_execute($cInsert);
- 	echo '<script>window.location="menu.php"</script>';
+ 	echo '<script>window.location="menuReplacement1.php"</script>';
  	
 
  }
@@ -59,7 +59,7 @@ if (!isset($_SESSION['hubCart'])) {
     <link href="OrderHub_Home_Page/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="OrderHub_Home_Page/css/creative.min.css" rel="stylesheet">
+    <link href="OrderHub_Home_Page/css/creative.min1.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -101,7 +101,7 @@ function validatePhone (control, errormessage) {
 
 <!-- Every time this page loads, set the initial state of the form and
      update the image to match. -->
-<body onload="setDefaultVarietyAndQuantity(); updateImage();" id="page-top">
+<body>
 <!-- ******************* HOME PAGE TEMPLATE CODE ******************* -->
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
@@ -117,7 +117,7 @@ function validatePhone (control, errormessage) {
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#about">Login</a>
+                        <a class="page-scroll" href="#about">Home</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#services">How it Works</a>
@@ -139,7 +139,7 @@ function validatePhone (control, errormessage) {
 
     <header>
         <div class="header-content">
-            <div class="header-content-inner">
+            <div class="header-content-inner" style="background: rgba(34, 34, 34, 0.5);">
                 <h1 id="homeHeading">OrderHub</h1>
                 <hr>
                 <p>Order anything you want from the Hub, anytime. No more waiting in lines.</p>

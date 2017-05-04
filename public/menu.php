@@ -81,16 +81,17 @@ if (!isset($_SESSION['hubCart'])) {
 	<script src="quantityButton/quantityButton.js"></script>
 	<link rel="stylesheet" type="text/css" href="quantityButton/quantityButton.css"/>
 
-
-	<!-- Script for including html files within html -->
+	
 	<!-- <script src="https://www.w3schools.com/lib/w3data.js"></script> -->
-
-
+	<!-- 
+	<link rel="import" href="startbootstrap-modern-business-gh-pages/menu-startbootstrap-modern-business-gh.html"> -->
+	
 </head>
 
 
 <body>
-
+	
+	<?php include 'startbootstrap-modern-business-gh-pages/iHubNav.html';?>
 
 
 	<div class="d-flex">
@@ -100,8 +101,10 @@ if (!isset($_SESSION['hubCart'])) {
 		<div class="menu-body d-flex justify-content-start" id = "menuContainer"> 
 
 		   <!-- |||||||Section starts: ENTREES ||||||||||||||||| -->
-		    <div class="menu-section d-flex">
+		    <div class="menu-section d-flex" id="includedContent">
 		        <h2 class="menu-section-title">ENTREES</h2>
+
+		        <?php include 'startbootstrap-modern-business-gh-pages/menu-startbootstrap-modern-business-gh.html';?>
 
 		        <!-- Item starts -->
 
@@ -117,6 +120,18 @@ if (!isset($_SESSION['hubCart'])) {
 		        	</div>
 		      	</div>
 		      	<!-- Item ends -->
+
+				<div class="card menu-item" id="wrap" data-target="#myModal" data-toggle="modal" style="border-color: #333;">
+					<div class="card-block">
+					    <h3 class="card-title menu-item-name">Wrap</h3>
+					    <div class="card-text menu-item-price" id="7">
+					    	$7.00
+					    </div>
+					    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  	</div>
+				</div>
+
+
 
 		      	<!-- Item starts -->
 		        <div class="menu-item" id="salad" data-target="#myModal" data-toggle="modal"> <!-- data-href="viewcart.php" -->

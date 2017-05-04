@@ -33,7 +33,7 @@ if (!isset($_SESSION['hubCart'])) {
  	//echo $payment_type;
  	$order_date = "4/20/17";
  	$number_of_items = count($_SESSION['hubCart']->getOrder());
- 	$total_order_price = "69";
+ 	$total_order_price = "$5.00";
 
 
  	mysqli_stmt_execute($orderInsert);
@@ -126,18 +126,65 @@ if (!isset($_SESSION['hubCart'])) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://use.fontawesome.com/6aabf1bd39.js"></script>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="startbootstrap-modern-business-gh-pages/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="startbootstrap-modern-business-gh-pages/css/modern-business.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="startbootstrap-modern-business-gh-pages/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!--    Linking CSS files from shopping cart template (index.html) -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="shoppingCartTemplate/assets/css/custom.css"/>  
+
+    <!-- Linking files for quantity button in modal -->
+    <script src="quantityButton/quantityButton.js"></script>
+    <link rel="stylesheet" type="text/css" href="quantityButton/quantityButton.css"/>
 </head>
 
 
 <body>
 
+<!-- ******************* HOME PAGE TEMPLATE CODE ******************* -->
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" style="background-color: white; opacity: 0.5;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">OrderHub</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
 
 
-    <div class="d-flex">
-        <h2>OrderHub</h2>
-    </div>
- 
+                    <li>
+                        <a class="page-scroll" href="mainLogin.php#about">Home</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="mainLogin.php#services">How it Works</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="mainLogin.php#contact">Contact</a>
+                    </li>
+                    <li>
+                        <a href="hubEmployeeView.php">Employees</a>
+                    </li>
+
+                    <!-- <a href="mainLogin.php">HOME PAGE</a> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
 
 
    
@@ -148,53 +195,103 @@ if (!isset($_SESSION['hubCart'])) {
 
     
 
-    <!-- ***************** Shopping Cart ******************* -->
+    
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <!-- Well -->
+                <div class="well">
+                    <h2 id="cartTitle">Cart</h2>
+                                <!-- *****************Shopping Cart ******************* -->
+
+                    <div>
+                        
+                        <ul>
+                            <li class="row list-inline columnCaptions">
+                                <span>QTY</span>
+                                <span>ITEM</span>
+                                <span>Price</span>
+                            </li>
+                        <?php
+                         //echo "<tr></tr>";
+                            
+                            $orderArray = $_SESSION['hubCart']->getOrder();
+                            $totalOrderPrice = 0;
+                            $counter = 0;
+                            while ($i = current($orderArray)) {
+
+                                echo "<li class=\"row\">";
+                                echo "<span class=\"quantity\">";
+                                echo $i->getItemQuantity();
+                                //echo $counter;
+                                echo "</span>";
+
+                                
+                                echo "<span class=\"itemName\">";
+                                echo ucfirst($i->getItemName()); 
+                                echo "<ul>";
 
 
-    <h3>Order Summary</h3>
 
-    <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Item</th>
-            <th>Toppings</th>
-        </tr>
-    </thead>
-    <tbody>
-            <?php
-             //echo "<tr></tr>";
-                $orderArray = $_SESSION['hubCart']->getOrder();
-
-                $counter = 0;
-                while ($i = current($orderArray)) {
-
-                    echo "<tr>";
-                    echo "<td>";
-
-                    echo $counter;
-                
-                    echo "</td>";
-                        echo "<td>";
-                        echo $i->getItemName(); 
-                        echo "</td>";
-
-                        $toppings = $i->getToppings();
-                        foreach ($toppings as $key => $value) {
-                            echo "<td>" .$value. " </td>";
-                        }               
-                    next($orderArray);
-                    echo "</tr>";
-                    $counter++;
-                }
-            ?>   
-     </tbody>   
-    </table>
+                                $toppings = $i->getToppings();
+                                    foreach ($toppings as $key => $value) {
+                                        echo "<li>"."-" .$value. " </li>";
+                                    }
+                                echo "</ul>";
 
 
-<form action='menu.php'>
+                                echo "</span>";
+
+                                echo "<span class=\"popbtn\"><a class=\"arrow\"></a></span>";
+                                
+                                echo "<span class=\"price\">";
+                                echo "$".$i->getItemPrice().".00";
+                                echo "</span>";
+
+
+                                $currentItemPrice = (int)(ltrim( $i->getItemPrice(), "$"));
+                                
+                                
+
+                                                    
+                                next($orderArray);
+                                // echo "</tr>";
+                                $counter++;
+                                $totalOrderPrice += $currentItemPrice;
+
+                                
+
+
+
+                                echo "</li>";
+                            }
+                            echo "<li class=\"row totals\">";
+                                    echo "<span class=\"itemName\">Total:";
+                                    echo "</span>";
+                                    echo "<span class=\"price\">". "$".$totalOrderPrice.".00";
+                                    echo "</span>";
+                                    echo "<span class=\"order\">";
+                                    echo "<a href = \"checkout.php\"class = \"text-center\">ORDER</a>";
+                                    echo "</span>";
+                        echo "</ul>";
+                            //echo "TOTAL PRICE = $".$totalOrderPrice.".00";
+                        ?>   
+                            <form action='menuReplacement1.php'>
     <input type="submit" value="Resume Shopping" name = "resumeShopping" />
-</form>
+</form>             
+                    </div>
+                    <div id="popover" style="display: none">
+                        <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                    </div>  
+                </div>
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+
+
 
 <form method ="post">
 <fieldset>
